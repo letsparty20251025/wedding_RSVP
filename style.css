@@ -18,7 +18,12 @@ body {
     font-size: 4rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    text-shadow: 3px 3px 8px rgba(0,0,0,0.5);
+    background: linear-gradient(45deg, #fff, #f0f8ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
 }
 
 .hero-subtitle {
@@ -26,6 +31,8 @@ body {
     font-weight: 300;
     letter-spacing: 2px;
     margin-bottom: 2rem;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+    color: rgba(255,255,255,0.95);
 }
 
 .section-title {
@@ -39,9 +46,10 @@ body {
 /* Hero Section */
 .hero-section {
     height: 100vh;
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-                /* url('https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'); */
-                url('static/YR5_4748.jpg');
+    /* background: linear-gradient(rgba(255,215,0,0.15), rgba(255,165,0,0.1)), 
+                linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), 
+                url('static/YR5_4748.jpg'); */
+    background: url('static/YR5_4748.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -49,6 +57,7 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
+    filter: saturate(1.2) brightness(1.1) contrast(1.05);
 }
 
 .hero-overlay {
@@ -65,27 +74,61 @@ body {
 .hero-content {
     text-align: center;
     animation: fadeInUp 1s ease-out;
+    position: relative;
+    z-index: 3;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 80vh;
+    padding-bottom: 5vh;
 }
 
 .wedding-date {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.03);
     backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 2rem;
-    margin: 2rem 0;
-    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 1rem 1.4rem;
+    margin: 2rem auto 0;
+    border: 1px solid rgba(255,255,255,0.1);
+    width: 320px;
+    max-width: 85%;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    position: relative;
+    z-index: 1;
 }
 
 .date-text {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 1.6rem;
+    font-weight: 500;
     margin-bottom: 0.5rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    color: rgba(255,255,255,0.9);
 }
 
 .location-text {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 300;
-    opacity: 0.9;
+    opacity: 0.85;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    color: rgba(255,255,255,0.85);
+}
+
+.venue-name {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin: 0.3rem 0;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    color: rgba(255,255,255,0.9);
+}
+
+.venue-floor {
+    font-size: 1rem;
+    font-weight: 300;
+    margin: 0.2rem 0 0.5rem 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    color: rgba(255,255,255,0.8);
 }
 
 /* Navigation */
@@ -344,6 +387,11 @@ body {
         font-size: 1.2rem;
     }
     
+    .hero-content {
+        min-height: 75vh;
+        padding-bottom: 8vh;
+    }
+    
     .section-title {
         font-size: 2rem;
     }
@@ -366,17 +414,33 @@ body {
     }
     
     .wedding-date {
-        padding: 1.5rem;
+        padding: 1rem 1.5rem;
+        margin: 1rem auto 0;
+        width: 320px;
+        max-width: 90%;
+    }
+    
+    /* Make RSVP button same width as wedding-date on mobile */
+    .hero-section .btn-outline-light {
+        width: 120px;
+        max-width: 80%;
+        margin: 0 auto;
+        display: block;
     }
     
     .date-text {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 }
 
 @media (max-width: 576px) {
     .hero-title {
         font-size: 2rem;
+    }
+    
+    .hero-content {
+        min-height: 70vh;
+        padding-bottom: 10vh;
     }
     
     .section-padding {
@@ -389,6 +453,21 @@ body {
     
     .rsvp-form-container {
         padding: 1.5rem;
+    }
+    
+    .wedding-date {
+        padding: 0.8rem 1.2rem;
+        margin: 0.5rem auto 0;
+        width: 280px;
+        max-width: 90%;
+    }
+    
+    /* Make RSVP button same width as wedding-date on smallest screens */
+    .hero-section .btn-outline-light {
+        width: 100px;
+        max-width: 80%;
+        margin: 0 auto;
+        display: block;
     }
 }
 
@@ -425,10 +504,59 @@ html {
     transition: all 0.3s ease;
 }
 
+/* Make RSVP button same width as wedding-date */
+.hero-section .btn-outline-light {
+    width: 150px;
+    max-width: 80%;
+    margin: 0 auto;
+    display: block;
+}
+
 /* Focus states for accessibility */
 .btn:focus,
 .form-control:focus {
-    outline: none;
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Hero section enhancements */
+.wedding-date {
+    animation: gentle-float 8s ease-in-out infinite;
+}
+
+@keyframes gentle-float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Add a subtle shimmer effect to the hero background */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        transparent 40%, 
+        rgba(255,255,255,0.05) 50%, 
+        transparent 60%);
+    animation: shimmer 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes shimmer {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
 /* Custom scrollbar */
