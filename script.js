@@ -351,7 +351,9 @@ $(window).resize(function() {
 // Preload images for better performance
 function preloadImages() {
     const imageUrls = [
-        'https://images.unsplash.com/photo-1519741497674-611481863552'
+        // 'https://images.unsplash.com/photo-1519741497674-611481863552'
+        'static/YR5_4748.jpg',
+        'static/02_card.jpg'
     ];
     
     imageUrls.forEach(url => {
