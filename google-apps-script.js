@@ -15,7 +15,7 @@ function doPost(request){
 }
 
 //  Enter sheet name where data is to be written below
-var SHEET_NAME = "wedding_RSVP";
+var SHEET_NAME = "RSVP_responses";
 
 // REPLACE THIS WITH YOUR OWN SHEET ID
 var SHEET_ID = "11Sp1j-FPY18T-WCTdqSCvMhP9ANqaCX12QXSsFlUhh8"; 
@@ -105,12 +105,15 @@ function createHeaders(sheet) {
   var headers = [
     'Timestamp',
     'name',
-    'email', 
+    'relation',
     'attendance',
     'guests',
     'dietary',
-    'song',
-    'message'
+    'children-seats',
+    'invitation',
+    'address',
+    'message',
+    'email'
   ];
   
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
@@ -163,12 +166,15 @@ function initializeSheet() {
       var expectedHeaders = [
         'Timestamp',
         'name',
-        'email', 
+        'relation',
         'attendance',
         'guests',
         'dietary',
-        'song',
-        'message'
+        'children-seats',
+        'invitation',
+        'address',
+        'message',
+        'email'
       ];
       
       var missingHeaders = [];
@@ -194,14 +200,17 @@ function initializeSheet() {
     // Set column widths for better readability
     sheet.setColumnWidth(1, 150); // Timestamp
     sheet.setColumnWidth(2, 200); // Name
-    sheet.setColumnWidth(3, 200); // Email
+    sheet.setColumnWidth(3, 150); // Relation
     sheet.setColumnWidth(4, 120); // Attendance
     sheet.setColumnWidth(5, 100); // Guests
-    sheet.setColumnWidth(6, 200); // Dietary
-    sheet.setColumnWidth(7, 200); // Song
-    sheet.setColumnWidth(8, 300); // Message
+    sheet.setColumnWidth(6, 150); // Dietary
+    sheet.setColumnWidth(7, 150); // Children-seats
+    sheet.setColumnWidth(8, 150); // Invitation
+    sheet.setColumnWidth(9, 300); // Address
+    sheet.setColumnWidth(10, 300); // Message
+    sheet.setColumnWidth(11, 200); // Email
     
-    // Add data validation for attendance column (if there are existing headers)
+    // Add data validation for attendance column (column D)
     if (sheet.getLastColumn() >= 4) {
       var attendanceColumn = sheet.getRange('D:D');
       var rule = SpreadsheetApp.newDataValidation()
@@ -212,7 +221,7 @@ function initializeSheet() {
       attendanceColumn.setDataValidation(rule);
     }
     
-    // Add data validation for guests column
+    // Add data validation for guests column (column E)
     if (sheet.getLastColumn() >= 5) {
       var guestsColumn = sheet.getRange('E:E');
       var guestsRule = SpreadsheetApp.newDataValidation()
@@ -221,6 +230,50 @@ function initializeSheet() {
         .setHelpText('Select number of guests (1-5)')
         .build();
       guestsColumn.setDataValidation(guestsRule);
+    }
+    
+    // Add data validation for relation column (column C)
+    if (sheet.getLastColumn() >= 3) {
+      var relationColumn = sheet.getRange('C:C');
+      var relationRule = SpreadsheetApp.newDataValidation()
+        .requireValueInList(['friends-groom', 'friends-bride', 'other'], true)
+        .setAllowInvalid(true)
+        .setHelpText('Select relation type')
+        .build();
+      relationColumn.setDataValidation(relationRule);
+    }
+    
+    // Add data validation for dietary column (column F)
+    if (sheet.getLastColumn() >= 6) {
+      var dietaryColumn = sheet.getRange('F:F');
+      var dietaryRule = SpreadsheetApp.newDataValidation()
+        .requireValueInList(['', '1', '2'], true)
+        .setAllowInvalid(true)
+        .setHelpText('Select dietary preference')
+        .build();
+      dietaryColumn.setDataValidation(dietaryRule);
+    }
+    
+    // Add data validation for children-seats column (column G)
+    if (sheet.getLastColumn() >= 7) {
+      var childrenSeatsColumn = sheet.getRange('G:G');
+      var childrenSeatsRule = SpreadsheetApp.newDataValidation()
+        .requireValueInList(['yes', 'no'], true)
+        .setAllowInvalid(true)
+        .setHelpText('Select if children seats are needed')
+        .build();
+      childrenSeatsColumn.setDataValidation(childrenSeatsRule);
+    }
+    
+    // Add data validation for invitation column (column H)
+    if (sheet.getLastColumn() >= 8) {
+      var invitationColumn = sheet.getRange('H:H');
+      var invitationRule = SpreadsheetApp.newDataValidation()
+        .requireValueInList(['yes', 'no'], true)
+        .setAllowInvalid(true)
+        .setHelpText('Select if paper invitation is needed')
+        .build();
+      invitationColumn.setDataValidation(invitationRule);
     }
     
     console.log('✅ Sheet initialization completed successfully!');
@@ -249,49 +302,100 @@ function initializeSheet() {
 
 function sendEmail(data) {
   try {
-    // Email configuration - UPDATE THESE VALUES
-    var recipientEmail = 'johnny114chiu@gmail.com'; // Change to your email
-    var ccEmail = ''; // Optional CC email
-    var subject = 'New Wedding RSVP Response';
+    var johnnyEmail = 'johnny114chiu@gmail.com';
     
-    // Create email body
-    var body = createEmailBody(data);
-    
-    // Email options
-    var options = {
-      'name': 'Wedding RSVP System',
-      'htmlBody': body
-    };
-    
-    // Add CC if specified
-    if (ccEmail) {
-      options.cc = ccEmail;
+    // Send confirmation email to the guest if they provided an email
+    if (data.email && data.email.trim() !== '') {
+      var guestSubject = 'RSVP 確認通知 - Johnny & Josephine 婚禮';
+      var guestBody = createEmailBody(data, true); // true indicates guest email
+      
+      var guestOptions = {
+        'name': 'Johnny & Josephine Wedding',
+        'htmlBody': guestBody,
+        'cc': johnnyEmail // CC Johnny on guest email
+      };
+      
+      try {
+        GmailApp.sendEmail(data.email, guestSubject, '', guestOptions);
+        console.log('Guest confirmation email sent successfully to: ' + data.email);
+      } catch(e) {
+        console.error('Error sending guest email:', e.toString());
+      }
     }
     
-    // Send email
-    GmailApp.sendEmail(recipientEmail, subject, '', options);
+    // Send notification email to Johnny
+    var adminSubject = 'New Wedding RSVP Response from ' + (data.name || 'Unknown Guest');
+    var adminBody = createEmailBody(data, false); // false indicates admin email
     
-    console.log('Email notification sent successfully');
+    var adminOptions = {
+      'name': 'Wedding RSVP System',
+      'htmlBody': adminBody
+    };
+    
+    try {
+      GmailApp.sendEmail(johnnyEmail, adminSubject, '', adminOptions);
+      console.log('Admin notification email sent successfully to: ' + johnnyEmail);
+    } catch(e) {
+      console.error('Error sending admin email:', e.toString());
+    }
+    
+    console.log('Email notifications processed successfully');
     
   } catch(e) {
-    console.error('Error sending email notification:', e.toString());
+    console.error('Error in sendEmail function:', e.toString());
     // Don't throw error here - we don't want email issues to break form submission
   }
 }
 
-function createEmailBody(data) {
-  var attendanceStatus = data.attendance === 'yes' ? '✅ Will Attend' : '❌ Cannot Attend';
+function createEmailBody(data, isGuestEmail) {
+  var attendanceStatus = data.attendance === 'yes' ? '&#x2705; 欣然接受' : '&#x274C; 忍痛拒絕';
   var attendanceColor = data.attendance === 'yes' ? '#28a745' : '#dc3545';
+  
+  // Map dietary options to readable text
+  var dietaryText = '';
+  if (data.dietary === '') dietaryText = '葷食';
+  else if (data.dietary === '1') dietaryText = '素食';
+  else if (data.dietary === '2') dietaryText = '減肥中，我絕食';
+  else dietaryText = data.dietary || 'Not specified';
+  
+  // Map relation to readable text
+  var relationText = '';
+  if (data.relation === 'friends-groom') relationText = '男方親友';
+  else if (data.relation === 'friends-bride') relationText = '女方親友';
+  else if (data.relation === 'other') relationText = '其他';
+  else relationText = data.relation || 'Not specified';
+  
+  // Map children seats to readable text
+  var childrenSeatsText = '';
+  if (data['children-seats'] === 'yes') childrenSeatsText = '需要';
+  else if (data['children-seats'] === 'no') childrenSeatsText = '不需要';
+  else childrenSeatsText = 'Not specified';
+  
+  // Map invitation to readable text
+  var invitationText = '';
+  if (data.invitation === 'yes') invitationText = '需要';
+  else if (data.invitation === 'no') invitationText = '不需要';
+  else invitationText = 'Not specified';
+  
+  var title = isGuestEmail ? 'RSVP 確認通知' : 'New Wedding RSVP Response';
+  var subtitle = isGuestEmail ? '感謝您的回覆' : 'New response received';
   
   var html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background: linear-gradient(135deg, #8B4513, #A0522D); padding: 30px; text-align: center; color: white;">
-        <h1 style="margin: 0; font-size: 28px; font-family: 'Dancing Script', cursive;">💕 Wedding RSVP</h1>
-        <p style="margin: 10px 0 0 0; font-size: 16px;">New response received</p>
+        <h1 style="margin: 0; font-size: 28px; font-family: 'Dancing Script', cursive;">&#x1F495; ${title}</h1>
+        <p style="margin: 10px 0 0 0; font-size: 16px;">${subtitle}</p>
       </div>
       
       <div style="background: #f8f9fa; padding: 30px;">
         <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          
+          ${isGuestEmail ? `
+          <div style="text-align: center; margin-bottom: 25px;">
+            <p style="font-size: 18px; color: #333; margin: 0;">親愛的 ${data.name || 'Guest'}，</p>
+            <p style="font-size: 16px; color: #666; margin: 10px 0;">我們已收到您的 RSVP 回覆，以下是您提交的資訊：</p>
+          </div>
+          ` : ''}
           
           <div style="text-align: center; margin-bottom: 25px;">
             <span style="background: ${attendanceColor}; color: white; padding: 8px 20px; border-radius: 25px; font-weight: bold; font-size: 14px;">
@@ -302,7 +406,7 @@ function createEmailBody(data) {
           <table style="width: 100%; border-collapse: collapse;">
             <tr>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333; width: 30%;">
-                👤 Name(s)
+                &#x1F464; 姓名
               </td>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #666;">
                 ${data.name || 'Not provided'}
@@ -311,7 +415,16 @@ function createEmailBody(data) {
             
             <tr>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
-                📧 Email
+                &#x1F465; 關係
+              </td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #666;">
+                ${relationText}
+              </td>
+            </tr>
+            
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
+                &#x1F4E7; 電子郵件
               </td>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #666;">
                 <a href="mailto:${data.email}" style="color: #8B4513; text-decoration: none;">
@@ -322,31 +435,47 @@ function createEmailBody(data) {
             
             <tr>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
-                👥 Number of Guests
+                &#x1F465; 出席人數
               </td>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #666;">
-                ${data.guests || '1'}
+                ${data.guests || '1'} 人
               </td>
             </tr>
             
-            ${data.dietary ? `
             <tr>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
-                🥗 Dietary Restrictions
+                &#x1F37D; 主菜選擇
               </td>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #666;">
-                ${data.dietary}
+                ${dietaryText}
               </td>
             </tr>
-            ` : ''}
             
-            ${data.song ? `
             <tr>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
-                🎵 Song Request
+                &#x1FA91; 兒童座椅
               </td>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #666;">
-                ${data.song}
+                ${childrenSeatsText}
+              </td>
+            </tr>
+            
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
+                &#x1F48C; 紙本喜帖
+              </td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #666;">
+                ${invitationText}
+              </td>
+            </tr>
+            
+            ${data.address ? `
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
+                &#x1F3E0; 寄送地址
+              </td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #666;">
+                ${data.address}
               </td>
             </tr>
             ` : ''}
@@ -354,7 +483,7 @@ function createEmailBody(data) {
             ${data.message ? `
             <tr>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
-                💌 Message
+                &#x1F48C; 給新人的話
               </td>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #666;">
                 ${data.message}
@@ -364,17 +493,29 @@ function createEmailBody(data) {
             
             <tr>
               <td style="padding: 12px 0; font-weight: bold; color: #333;">
-                🕒 Submitted
+                &#x1F552; 提交時間
               </td>
               <td style="padding: 12px 0; color: #666;">
                 ${new Date().toLocaleString()}
               </td>
             </tr>
           </table>
+          
+          ${isGuestEmail ? `
+          <div style="text-align: center; margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+            <h3 style="color: #8B4513; margin: 0 0 15px 0;">婚禮資訊</h3>
+            <p style="margin: 5px 0; color: #333;"><strong>日期：</strong>2025年10月25日 (星期六)</p>
+            <p style="margin: 5px 0; color: #333;"><strong>時間：</strong>下午5:30</p>
+            <p style="margin: 5px 0; color: #333;"><strong>地點：</strong>晶宴會館-桃園館 三樓詠劇場</p>
+            <p style="margin: 5px 0; color: #333;"><strong>地址：</strong>桃園市桃園區南平路166號</p>
+            <p style="margin: 15px 0 0 0; color: #666; font-size: 14px;">期待與您共度這個特別的日子！</p>
+          </div>
+          ` : ''}
         </div>
         
         <div style="text-align: center; margin-top: 25px; color: #666; font-size: 14px;">
-          <p>This email was automatically generated from your wedding website RSVP form.</p>
+          <p>此郵件由 RSVP 系統自動發送</p>
+          ${isGuestEmail ? '<p>如有任何問題，請直接回覆此郵件或聯繫新人</p>' : ''}
         </div>
       </div>
     </div>
@@ -465,10 +606,13 @@ function testSetup() {
     sendEmail({
       name: 'Test User',
       email: 'test@example.com',
+      relation: 'friends-groom',
       attendance: 'yes',
       guests: '2',
-      dietary: 'No restrictions',
-      song: 'Your Song by Elton John',
+      dietary: '',
+      'children-seats': 'no',
+      invitation: 'yes',
+      address: 'Test Address',
       message: 'This is a test submission'
     });
     console.log('✅ Email test completed');
