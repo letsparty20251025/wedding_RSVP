@@ -46,10 +46,21 @@ body {
 /* Hero Section */
 .hero-section {
     height: 100vh;
-    /* background: linear-gradient(rgba(255,215,0,0.15), rgba(255,165,0,0.1)), 
-                linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), 
-                url('static/YR5_4748.jpg'); */
+    /* Fallback for browsers that don't support WebP */
     background: url('static/YR5_4748.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    filter: saturate(1.2) brightness(1.1) contrast(1.05);
+}
+
+/* WebP support for modern browsers */
+.webp .hero-section {
+    background: url('static/YR5_4748.webp');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
