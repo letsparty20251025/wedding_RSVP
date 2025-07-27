@@ -1,5 +1,13 @@
-function doGet(request){
-  return handleRequest(request);
+function doGet(e) {
+  // Return a test response for GET requests
+  return ContentService
+    .createTextOutput(JSON.stringify({
+      success: true,
+      message: 'Google Apps Script is working',
+      timestamp: new Date().toISOString(),
+      method: 'GET'
+    }))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 function doPost(request){
@@ -7,7 +15,7 @@ function doPost(request){
 }
 
 //  Enter sheet name where data is to be written below
-var SHEET_NAME = "Wedding RSVP Responses";
+var SHEET_NAME = "wedding_RSVP";
 
 // REPLACE THIS WITH YOUR OWN SHEET ID
 var SHEET_ID = "11Sp1j-FPY18T-WCTdqSCvMhP9ANqaCX12QXSsFlUhh8"; 
@@ -81,11 +89,16 @@ function setup() {
     var doc = SpreadsheetApp.getActiveSpreadsheet();
     SCRIPT_PROP.setProperty("key", doc.getId());
     
-    // Create headers if they don't exist
-    var sheet = doc.getSheetByName(SHEET_NAME);
-    if (sheet.getLastRow() === 0 || sheet.getRange(1, 1).getValue() === '') {
-      createHeaders(sheet);
+    // Initialize the sheet with headers and formatting
+    var initResult = initializeSheet();
+    
+    if (initResult.success) {
+      console.log('✅ Setup completed successfully');
+    } else {
+      console.error('❌ Setup failed:', initResult.error);
     }
+    
+    return initResult;
 }
 
 function createHeaders(sheet) {
@@ -113,12 +126,133 @@ function createHeaders(sheet) {
   sheet.setFrozenRows(1);
 }
 
+function initializeSheet() {
+  try {
+    console.log('Initializing wedding RSVP sheet...');
+    
+    // Open the spreadsheet
+    var doc = SpreadsheetApp.openById(SHEET_ID);
+    
+    // Check if the sheet exists, if not create it
+    var sheet = doc.getSheetByName(SHEET_NAME);
+    if (!sheet) {
+      console.log('Sheet "' + SHEET_NAME + '" not found. Creating new sheet...');
+      sheet = doc.insertSheet(SHEET_NAME);
+      console.log('✅ Sheet created successfully');
+    } else {
+      console.log('✅ Sheet "' + SHEET_NAME + '" found');
+    }
+    
+    // Check if headers already exist
+    var lastRow = sheet.getLastRow();
+    var existingHeaders = [];
+    
+    if (lastRow > 0) {
+      existingHeaders = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    }
+    
+    // If no headers exist or first cell is empty, create headers
+    if (lastRow === 0 || !existingHeaders[0] || existingHeaders[0] === '') {
+      console.log('No headers found. Creating headers...');
+      createHeaders(sheet);
+      console.log('✅ Headers created successfully');
+    } else {
+      console.log('✅ Headers already exist');
+      
+      // Verify that all expected headers are present
+      var expectedHeaders = [
+        'Timestamp',
+        'name',
+        'email', 
+        'attendance',
+        'guests',
+        'dietary',
+        'song',
+        'message'
+      ];
+      
+      var missingHeaders = [];
+      expectedHeaders.forEach(function(header) {
+        if (existingHeaders.indexOf(header) === -1) {
+          missingHeaders.push(header);
+        }
+      });
+      
+      if (missingHeaders.length > 0) {
+        console.log('⚠️ Missing headers detected: ' + missingHeaders.join(', '));
+        console.log('Recreating headers to ensure all fields are present...');
+        
+        // Clear existing headers and recreate
+        sheet.getRange(1, 1, 1, sheet.getLastColumn()).clearContent();
+        createHeaders(sheet);
+        console.log('✅ Headers updated successfully');
+      }
+    }
+    
+    // Set up some additional formatting for better usability
+    
+    // Set column widths for better readability
+    sheet.setColumnWidth(1, 150); // Timestamp
+    sheet.setColumnWidth(2, 200); // Name
+    sheet.setColumnWidth(3, 200); // Email
+    sheet.setColumnWidth(4, 120); // Attendance
+    sheet.setColumnWidth(5, 100); // Guests
+    sheet.setColumnWidth(6, 200); // Dietary
+    sheet.setColumnWidth(7, 200); // Song
+    sheet.setColumnWidth(8, 300); // Message
+    
+    // Add data validation for attendance column (if there are existing headers)
+    if (sheet.getLastColumn() >= 4) {
+      var attendanceColumn = sheet.getRange('D:D');
+      var rule = SpreadsheetApp.newDataValidation()
+        .requireValueInList(['yes', 'no'], true)
+        .setAllowInvalid(false)
+        .setHelpText('Please select either "yes" or "no"')
+        .build();
+      attendanceColumn.setDataValidation(rule);
+    }
+    
+    // Add data validation for guests column
+    if (sheet.getLastColumn() >= 5) {
+      var guestsColumn = sheet.getRange('E:E');
+      var guestsRule = SpreadsheetApp.newDataValidation()
+        .requireValueInList(['1', '2', '3', '4', '5'], true)
+        .setAllowInvalid(true)
+        .setHelpText('Select number of guests (1-5)')
+        .build();
+      guestsColumn.setDataValidation(guestsRule);
+    }
+    
+    console.log('✅ Sheet initialization completed successfully!');
+    console.log('📊 Sheet Details:');
+    console.log('   - Sheet Name: ' + SHEET_NAME);
+    console.log('   - Sheet ID: ' + SHEET_ID);
+    console.log('   - Total Columns: ' + sheet.getLastColumn());
+    console.log('   - Total Rows: ' + sheet.getLastRow());
+    
+    return {
+      success: true,
+      message: 'Sheet initialized successfully',
+      sheetName: SHEET_NAME,
+      columns: sheet.getLastColumn(),
+      rows: sheet.getLastRow()
+    };
+    
+  } catch(e) {
+    console.error('❌ Error initializing sheet:', e.toString());
+    return {
+      success: false,
+      error: e.toString()
+    };
+  }
+}
+
 function sendEmail(data) {
   try {
     // Email configuration - UPDATE THESE VALUES
-    var recipientEmail = 'sarah.john.wedding@gmail.com'; // Change to your email
+    var recipientEmail = 'johnny114chiu@gmail.com'; // Change to your email
     var ccEmail = ''; // Optional CC email
-    var subject = '💕 New Wedding RSVP Response';
+    var subject = 'New Wedding RSVP Response';
     
     // Create email body
     var body = createEmailBody(data);
@@ -309,6 +443,15 @@ function sendReminderEmails() {
 function testSetup() {
   try {
     console.log('Testing Google Apps Script setup...');
+    
+    // Test sheet initialization
+    console.log('🔧 Initializing sheet...');
+    var initResult = initializeSheet();
+    if (initResult.success) {
+      console.log('✅ Sheet initialization successful');
+    } else {
+      throw new Error('Sheet initialization failed: ' + initResult.error);
+    }
     
     // Test spreadsheet access
     var doc = SpreadsheetApp.openById(SHEET_ID);
