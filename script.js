@@ -65,11 +65,41 @@ function scrollToSection(sectionId) {
 
 // Navbar scroll effect
 function initNavbarScroll() {
+    let lastScrollTop = 0;
+    let scrollThreshold = 5; // Minimum scroll distance to trigger hide/show
+    let isNavbarVisible = true;
+    
     $(window).scroll(function() {
-        if ($(window).scrollTop() > 50) {
+        const currentScrollTop = $(window).scrollTop();
+        
+        // Add/remove 'scrolled' class for styling when past 50px
+        if (currentScrollTop > 50) {
             $('.navbar').addClass('scrolled');
         } else {
             $('.navbar').removeClass('scrolled');
+        }
+        
+        // Only process hide/show logic if we've scrolled enough and are past the hero section
+        if (Math.abs(currentScrollTop - lastScrollTop) > scrollThreshold && currentScrollTop > 100) {
+            
+            if (currentScrollTop > lastScrollTop && isNavbarVisible) {
+                // Scrolling down - hide navbar
+                $('.navbar').addClass('navbar-hidden').removeClass('navbar-visible');
+                isNavbarVisible = false;
+            } else if (currentScrollTop < lastScrollTop && !isNavbarVisible) {
+                // Scrolling up - show navbar
+                $('.navbar').addClass('navbar-visible').removeClass('navbar-hidden');
+                isNavbarVisible = true;
+            }
+            
+            lastScrollTop = currentScrollTop;
+        }
+        
+        // Always show navbar when at the top of the page
+        if (currentScrollTop <= 100) {
+            $('.navbar').addClass('navbar-visible').removeClass('navbar-hidden');
+            isNavbarVisible = true;
+            lastScrollTop = currentScrollTop;
         }
     });
 }
