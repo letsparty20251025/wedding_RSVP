@@ -13,8 +13,8 @@ $(document).ready(function() {
 
 // Countdown Timer
 function initCountdown() {
-    // Set the date we're counting down to (August 15, 2025)
-    const weddingDate = new Date("Aug 15, 2025 16:00:00").getTime();
+    // Set the date we're counting down to (October 25, 2025)
+    const weddingDate = new Date("Oct 25, 2025 17:30:00").getTime();
     
     // Update the countdown every 1 second
     const countdownTimer = setInterval(function() {
@@ -98,11 +98,33 @@ function initFormHandling() {
     $('#wedding-form input, #wedding-form select, #wedding-form textarea').on('blur', function() {
         validateField($(this));
     });
+    
+    // Handle invitation field change to show/hide address field
+    $('#invitation-input').on('change', function() {
+        const invitationValue = $(this).val();
+        const addressRow = $('#address-row');
+        const addressInput = $('#address-input');
+        
+        if (invitationValue === 'yes') {
+            addressRow.slideDown(300);
+            addressInput.prop('required', true);
+        } else {
+            addressRow.slideUp(300);
+            addressInput.prop('required', false);
+            addressInput.val(''); // Clear the address field when hidden
+        }
+    });
 }
 
 function validateForm() {
     let isValid = true;
-    const requiredFields = ['name', 'email', 'attendance'];
+    const requiredFields = ['name', 'attendance'];
+    
+    // Add address to required fields if invitation is needed
+    const invitationValue = $('#invitation-input').val();
+    if (invitationValue === 'yes') {
+        requiredFields.push('address');
+    }
     
     requiredFields.forEach(fieldName => {
         const field = $(`[name="${fieldName}"]`);
@@ -111,7 +133,7 @@ function validateForm() {
         }
     });
     
-    // Email validation
+    // Email validation (if email field exists)
     const email = $('#email-input').val();
     if (email && !isValidEmail(email)) {
         showFieldError('#email-input', 'Please enter a valid email address');
@@ -246,6 +268,10 @@ function resetForm() {
     $('#wedding-form')[0].reset();
     $('#wedding-form .form-control').removeClass('is-valid is-invalid');
     $('#wedding-form .invalid-feedback').remove();
+    
+    // Hide address field when form is reset
+    $('#address-row').hide();
+    $('#address-input').prop('required', false);
 }
 
 // Optional: Confetti effect for successful submission
@@ -353,7 +379,16 @@ function preloadImages() {
     const imageUrls = [
         // 'https://images.unsplash.com/photo-1519741497674-611481863552'
         'static/YR5_4748.jpg',
-        'static/02_card.jpg'
+        'static/02_card.jpg',
+        'static/03.png',
+        'static/04.png',
+        'static/05.png',
+        'static/06.png',
+        'static/07.png',
+        'static/08.png',
+        'static/09.png',
+        'static/10.png',
+        'static/11.png'
     ];
     
     imageUrls.forEach(url => {
