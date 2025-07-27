@@ -4,7 +4,7 @@ function doGet(e) {
     .createTextOutput(JSON.stringify({
       success: true,
       message: 'Google Apps Script is working',
-      timestamp: new Date().toISOString(),
+      timestamp: new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toISOString().replace('T', ' ').replace('Z', ' UTC+8'),
       method: 'GET'
     }))
     .setMimeType(ContentService.MimeType.JSON);
@@ -43,7 +43,8 @@ function handleRequest(request) {
     // loop through the header columns
     for (i in headers){
       if (headers[i] == "Timestamp"){ // special case if you include a 'Timestamp' column
-        row.push(new Date());
+        var utc8Time = new Date(new Date().getTime() + 8 * 60 * 60 * 1000);
+        row.push(utc8Time.toISOString().replace('T', ' ').replace('Z', ' UTC+8'));
       } else if(headers[i] == "sn") {
         row.push(sheet.getLastRow());
       } else { // else use header name to get data
@@ -496,7 +497,7 @@ function createEmailBody(data, isGuestEmail) {
                 &#x1F552; 提交時間
               </td>
               <td style="padding: 12px 0; color: #666;">
-                ${new Date().toLocaleString()}
+                ${new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toISOString().replace('T', ' ').replace('Z', ' UTC+8')}
               </td>
             </tr>
           </table>
