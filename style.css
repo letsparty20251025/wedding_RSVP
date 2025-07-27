@@ -24,6 +24,7 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+    /* margin-bottom: 5.5rem; */
 }
 
 .hero-subtitle {
@@ -99,10 +100,10 @@ body {
 .wedding-date {
     background: rgba(255,255,255,0.03);
     backdrop-filter: blur(3px);
+    border: 1px solid rgba(255, 255, 255, 0.034);
     border-radius: 20px;
     padding: 1rem 1.4rem;
     margin: 2rem auto 0;
-    border: 1px solid rgba(255, 255, 255, 0.034);
     width: 320px;
     max-width: 85%;
     box-shadow: 0 4px 16px rgba(0,0,0,0.05);
@@ -542,6 +543,8 @@ body {
     }
     
     .wedding-date {
+        backdrop-filter: blur(3px);
+        border: 1px solid rgba(255, 255, 255, 0.034);
         padding: 1rem 1.5rem;
         margin: 1rem auto 0;
         width: 320px;
@@ -584,6 +587,8 @@ body {
     }
     
     .wedding-date {
+        backdrop-filter: blur(3px);
+        border: 1px solid rgba(255, 255, 255, 0.034);
         padding: 0.8rem 1.2rem;
         margin: 0.5rem auto 0;
         width: 280px;
