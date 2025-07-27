@@ -450,6 +450,32 @@ $(document).ready(function() {
     });
 });
 
+// Intersection Observer for story content animation
+function initStoryAnimation() {
+    const observerOptions = {
+        threshold: 0.3,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all story content elements
+    document.querySelectorAll('.story-content').forEach(element => {
+        observer.observe(element);
+    });
+}
+
+// Initialize story animation when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initStoryAnimation();
+});
+
 // Export functions for testing (if needed)
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
