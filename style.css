@@ -49,7 +49,7 @@ body {
     /* Fallback for browsers that don't support WebP */
     background: url('static/YR5_4748.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: 70% center;
     background-attachment: fixed;
     display: flex;
     align-items: center;
@@ -62,7 +62,7 @@ body {
 .webp .hero-section {
     background: url('static/YR5_4748.webp');
     background-size: cover;
-    background-position: center;
+    background-position: 70% center;
     background-attachment: fixed;
     display: flex;
     align-items: center;
@@ -98,11 +98,11 @@ body {
 
 .wedding-date {
     background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(3px);
     border-radius: 20px;
     padding: 1rem 1.4rem;
     margin: 2rem auto 0;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.034);
     width: 320px;
     max-width: 85%;
     box-shadow: 0 4px 16px rgba(0,0,0,0.05);
