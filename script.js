@@ -449,7 +449,7 @@ $(window).resize(function() {
 // Preload images for better performance
 function preloadImages() {
     const imageUrls = [
-        'static/01_cover.png',
+        'static/01_cover.webp',
         'static/02_card.jpg',
         'static/03.png',
         'static/04.png',

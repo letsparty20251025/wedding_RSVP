@@ -447,6 +447,10 @@ section {
     flex-direction: row-reverse;
 }
 
+.story-item.reverse .story-content {
+    text-align: right;
+}
+
 .story-content {
     flex: 1;
 }
@@ -897,6 +901,13 @@ section {
     .story-item.reverse {
         flex-direction: column;
         gap: 1.5rem;
+    }
+
+    .story-item.reverse .story-content {
+        text-align: center;
+    }
+    .story-content h4 {
+        text-align: center;
     }
 
     .gallery-grid {
