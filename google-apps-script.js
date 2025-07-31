@@ -110,6 +110,7 @@ function createHeaders(sheet) {
     'attendance',
     'guests',
     'dietary',
+    'vegetarian-meals',
     'children-seats',
     'invitation',
     'address',
@@ -171,6 +172,7 @@ function initializeSheet() {
         'attendance',
         'guests',
         'dietary',
+        'vegetarian-meals',
         'children-seats',
         'invitation',
         'address',
@@ -205,11 +207,12 @@ function initializeSheet() {
     sheet.setColumnWidth(4, 120); // Attendance
     sheet.setColumnWidth(5, 100); // Guests
     sheet.setColumnWidth(6, 150); // Dietary
-    sheet.setColumnWidth(7, 150); // Children-seats
-    sheet.setColumnWidth(8, 150); // Invitation
-    sheet.setColumnWidth(9, 300); // Address
-    sheet.setColumnWidth(10, 300); // Message
-    sheet.setColumnWidth(11, 200); // Email
+    sheet.setColumnWidth(7, 150); // Vegetarian-meals
+    sheet.setColumnWidth(8, 150); // Children-seats
+    sheet.setColumnWidth(9, 150); // Invitation
+    sheet.setColumnWidth(10, 300); // Address
+    sheet.setColumnWidth(11, 300); // Message
+    sheet.setColumnWidth(12, 200); // Email
     
     // Add data validation for attendance column (column D)
     if (sheet.getLastColumn() >= 4) {
@@ -255,9 +258,20 @@ function initializeSheet() {
       dietaryColumn.setDataValidation(dietaryRule);
     }
     
-    // Add data validation for children-seats column (column G)
+    // Add data validation for vegetarian-meals column (column G)
     if (sheet.getLastColumn() >= 7) {
-      var childrenSeatsColumn = sheet.getRange('G:G');
+      var vegetarianMealsColumn = sheet.getRange('G:G');
+      var vegetarianMealsRule = SpreadsheetApp.newDataValidation()
+        .requireValueInList(['', '1', '2', '3', '4', '5'], true)
+        .setAllowInvalid(true)
+        .setHelpText('Select number of vegetarian meals needed')
+        .build();
+      vegetarianMealsColumn.setDataValidation(vegetarianMealsRule);
+    }
+    
+    // Add data validation for children-seats column (column H)
+    if (sheet.getLastColumn() >= 8) {
+      var childrenSeatsColumn = sheet.getRange('H:H');
       var childrenSeatsRule = SpreadsheetApp.newDataValidation()
         .requireValueInList(['yes', 'no'], true)
         .setAllowInvalid(true)
@@ -266,9 +280,9 @@ function initializeSheet() {
       childrenSeatsColumn.setDataValidation(childrenSeatsRule);
     }
     
-    // Add data validation for invitation column (column H)
-    if (sheet.getLastColumn() >= 8) {
-      var invitationColumn = sheet.getRange('H:H');
+    // Add data validation for invitation column (column I)
+    if (sheet.getLastColumn() >= 9) {
+      var invitationColumn = sheet.getRange('I:I');
       var invitationRule = SpreadsheetApp.newDataValidation()
         .requireValueInList(['yes', 'no'], true)
         .setAllowInvalid(true)
@@ -358,6 +372,14 @@ function createEmailBody(data, isGuestEmail) {
   else if (data.dietary === '1') dietaryText = '素食';
   else if (data.dietary === '2') dietaryText = '減肥中，我絕食';
   else dietaryText = data.dietary || 'Not specified';
+  
+  // Map vegetarian meals to readable text
+  var vegetarianMealsText = '';
+  if (data['vegetarian-meals'] && data.dietary === '1') {
+    vegetarianMealsText = data['vegetarian-meals'] + ' 份素食';
+  } else {
+    vegetarianMealsText = 'Not applicable';
+  }
   
   // Map relation to readable text
   var relationText = '';
@@ -451,6 +473,17 @@ function createEmailBody(data, isGuestEmail) {
                 ${dietaryText}
               </td>
             </tr>
+            
+            ${data.dietary === '1' && data['vegetarian-meals'] ? `
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
+                &#x1F957; 素食餐數
+              </td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #666;">
+                ${vegetarianMealsText}
+              </td>
+            </tr>
+            ` : ''}
             
             <tr>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
@@ -610,7 +643,8 @@ function testSetup() {
       relation: 'friends-groom',
       attendance: 'yes',
       guests: '2',
-      dietary: '',
+      dietary: '1',
+      'vegetarian-meals': '2',
       'children-seats': 'no',
       invitation: 'yes',
       address: 'Test Address',

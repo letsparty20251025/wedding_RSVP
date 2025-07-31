@@ -183,6 +183,22 @@ function initFormHandling() {
             addressInput.val(''); // Clear the address field when hidden
             }
         });
+
+    // Handle dietary field change to show/hide vegetarian meals question
+    $('#dietary-input').on('change', function() {
+        const dietaryValue = $(this).val();
+        const vegetarianMealsRow = $('#vegetarian-meals-row');
+        const vegetarianMealsInput = $('#vegetarian-meals-input');
+        
+        if (dietaryValue === '1') { // '1' represents 素食 (vegetarian)
+            vegetarianMealsRow.slideDown(300);
+            vegetarianMealsInput.prop('required', true);
+        } else {
+            vegetarianMealsRow.slideUp(300);
+            vegetarianMealsInput.prop('required', false);
+            vegetarianMealsInput.val(''); // Clear the field when hidden
+        }
+    });
 }
 
 function validateForm() {
@@ -193,6 +209,12 @@ function validateForm() {
     const invitationValue = $('#invitation-input').val();
     if (invitationValue === 'yes') {
         requiredFields.push('address');
+    }
+    
+    // Add vegetarian meals to required fields if dietary choice is vegetarian
+    const dietaryValue = $('#dietary-input').val();
+    if (dietaryValue === '1') {
+        requiredFields.push('vegetarian-meals');
     }
     
     requiredFields.forEach(fieldName => {
@@ -341,6 +363,10 @@ function resetForm() {
     // Hide address field when form is reset
     $('#address-row').hide();
     $('#address-input').prop('required', false);
+    
+    // Hide vegetarian meals field when form is reset
+    $('#vegetarian-meals-row').hide();
+    $('#vegetarian-meals-input').prop('required', false);
 }
 
 // Optional: Confetti effect for successful submission
