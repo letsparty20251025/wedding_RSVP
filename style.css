@@ -59,9 +59,12 @@ body {
 }
 
 .nav-brand {
+    /* font-family: 'Dancing Script', cursive; */
+    font-family: 'Great Vibes', cursive;
     font-size: 1.5rem;
     font-weight: bold;
     color: #d4b99c;
+    text-decoration: none;
 }
 
 .nav-menu {
@@ -124,7 +127,7 @@ body {
     font-weight: 400;
     letter-spacing: 0.3rem;
     margin-bottom: 0.5rem;
-    color: #2c2c2c;
+    color: #8B4513;
     text-transform: none;
     font-family: 'Great Vibes', cursive;
 }
@@ -134,7 +137,8 @@ body {
     color: #888;
     letter-spacing: 0.2rem;
     text-transform: lowercase;
-    font-style: italic;
+    /* font-style: italic; */
+    font-family: 'Dancing Script', cursive;
     margin-top: 0.5rem;
 }
 
@@ -146,6 +150,16 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+.wedding-details:hover {
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 
+                0 6px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .date-time {
@@ -1001,6 +1015,11 @@ section {
 }
 /* Smooth scrolling */
 html {
+    scroll-behavior: smooth;
+}
+
+/* Ensure smooth scrolling works */
+* {
     scroll-behavior: smooth;
 }
 

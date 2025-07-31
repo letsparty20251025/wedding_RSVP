@@ -1,5 +1,42 @@
 // Wedding SPA JavaScript
 
+// Global function for scrolling to sections (accessible from inline onclick)
+function scrollToSection(selector) {
+    // Fallback for pure JavaScript if jQuery is not available
+    if (typeof $ === 'undefined') {
+        const targetSection = document.querySelector(selector);
+        if (targetSection) {
+            const navBar = document.querySelector('.nav-bar');
+            const navBarHeight = navBar ? navBar.offsetHeight : 0;
+            const offsetTop = targetSection.offsetTop - navBarHeight;
+            
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
+            });
+        }
+        return;
+    }
+    
+    // Wait for jQuery to be ready
+    $(document).ready(function() {
+        const targetSection = $(selector);
+        if (targetSection.length) {
+            const navBarHeight = $('.nav-bar').length ? $('.nav-bar').height() : 0;
+            const offsetTop = targetSection.offset().top - navBarHeight;
+            $('html, body').animate({
+                scrollTop: offsetTop
+            }, 800, 'swing');
+            
+            // Close mobile menu if open
+            if ($('.nav-menu').hasClass('active')) {
+                $('.nav-menu').removeClass('active');
+                $('.nav-toggle').removeClass('active');
+            }
+        }
+    });
+}
+
 $(document).ready(function() {
     // Initialize the page
     initCountdown();
@@ -55,22 +92,6 @@ function initSmoothScrolling() {
             scrollToSection(href);
         }
     });
-}
-
-function scrollToSection(selector) {
-    const targetSection = $(selector);
-    if (targetSection.length) {
-        const offsetTop = targetSection.offset().top - $('.nav-bar').height();
-        $('html, body').animate({
-            scrollTop: offsetTop
-        }, 800, 'swing');
-        
-        // Close mobile menu if open
-        if ($('.nav-menu').hasClass('active')) {
-            $('.nav-menu').removeClass('active');
-            $('.nav-toggle').removeClass('active');
-        }
-    }
 }
 
 // Navbar scroll effect
