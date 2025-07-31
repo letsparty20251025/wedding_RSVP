@@ -1,21 +1,5 @@
 // Wedding SPA JavaScript
 
-// WebP Detection
-function detectWebPSupport() {
-    const webP = new Image();
-    webP.onload = webP.onerror = function () {
-        if (webP.height === 2) {
-            document.documentElement.classList.add('webp');
-        } else {
-            document.documentElement.classList.add('no-webp');
-        }
-    };
-    webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
-}
-
-// Call WebP detection before DOM is ready
-detectWebPSupport();
-
 $(document).ready(function() {
     // Initialize the page
     initCountdown();
@@ -424,7 +408,8 @@ $(window).resize(function() {
 function preloadImages() {
     const imageUrls = [
         // 'https://images.unsplash.com/photo-1519741497674-611481863552'
-        'static/YR5_4748.jpg',
+        // 'static/YR5_4748.jpg',
+        'static/B6_cover.webp',
         'static/02_card.jpg',
         'static/03.png',
         'static/04.png',
