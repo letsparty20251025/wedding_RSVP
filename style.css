@@ -988,7 +988,8 @@ section {
     }
 
     .gallery-item img {
-        height: 280px;
+        /* height: 280px; */
+        height: 380px;
     }
 
     .rsvp-form {
