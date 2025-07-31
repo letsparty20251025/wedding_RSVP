@@ -6,7 +6,11 @@ $(document).ready(function() {
     initSmoothScrolling();
     initFormHandling();
     initNavbarScroll();
-    
+    initMobileNavToggle();
+    initGalleryModal();
+    initAnimations();
+    preloadImages();
+
     // Add loading animation to page
     $('body').addClass('loaded');
 });
@@ -44,62 +48,76 @@ function initCountdown() {
 
 // Smooth scrolling for navigation
 function initSmoothScrolling() {
-    $('.nav-link, .btn[onclick]').click(function(e) {
+    $('.nav-link, .cta-button').on('click', function(e) {
         const href = $(this).attr('href');
         if (href && href.startsWith('#')) {
             e.preventDefault();
-            scrollToSection(href.substring(1));
+            scrollToSection(href);
         }
     });
 }
 
-function scrollToSection(sectionId) {
-    const targetSection = $('#' + sectionId);
+function scrollToSection(selector) {
+    const targetSection = $(selector);
     if (targetSection.length) {
-        const offsetTop = targetSection.offset().top - 70; // Account for navbar
+        const offsetTop = targetSection.offset().top - $('.nav-bar').height();
         $('html, body').animate({
             scrollTop: offsetTop
         }, 800, 'swing');
+        
+        // Close mobile menu if open
+        if ($('.nav-menu').hasClass('active')) {
+            $('.nav-menu').removeClass('active');
+            $('.nav-toggle').removeClass('active');
+        }
     }
 }
 
 // Navbar scroll effect
 function initNavbarScroll() {
     let lastScrollTop = 0;
-    let scrollThreshold = 5; // Minimum scroll distance to trigger hide/show
-    let isNavbarVisible = true;
+    const navBar = $('.nav-bar');
     
     $(window).scroll(function() {
-        const currentScrollTop = $(window).scrollTop();
+        const currentScrollTop = $(this).scrollTop();
         
-        // Add/remove 'scrolled' class for styling when past 50px
-        if (currentScrollTop > 50) {
-            $('.navbar').addClass('scrolled');
+        if (currentScrollTop > lastScrollTop && currentScrollTop > navBar.height()) {
+            // Scrolling down
+            navBar.addClass('nav-hidden');
         } else {
-            $('.navbar').removeClass('scrolled');
+            // Scrolling up
+            navBar.removeClass('nav-hidden');
         }
-        
-        // Only process hide/show logic if we've scrolled enough and are past the hero section
-        if (Math.abs(currentScrollTop - lastScrollTop) > scrollThreshold && currentScrollTop > 100) {
-            
-            if (currentScrollTop > lastScrollTop && isNavbarVisible) {
-                // Scrolling down - hide navbar
-                $('.navbar').addClass('navbar-hidden').removeClass('navbar-visible');
-                isNavbarVisible = false;
-            } else if (currentScrollTop < lastScrollTop && !isNavbarVisible) {
-                // Scrolling up - show navbar
-                $('.navbar').addClass('navbar-visible').removeClass('navbar-hidden');
-                isNavbarVisible = true;
-            }
-            
-            lastScrollTop = currentScrollTop;
-        }
-        
-        // Always show navbar when at the top of the page
-        if (currentScrollTop <= 100) {
-            $('.navbar').addClass('navbar-visible').removeClass('navbar-hidden');
-            isNavbarVisible = true;
-            lastScrollTop = currentScrollTop;
+        lastScrollTop = currentScrollTop;
+    });
+}
+
+// Mobile navigation toggle
+function initMobileNavToggle() {
+    $('.nav-toggle').on('click', function() {
+        $('.nav-menu').toggleClass('active');
+        $(this).toggleClass('active');
+    });
+}
+
+// Gallery Modal
+function initGalleryModal() {
+    const modal = $('<div class="modal" style="display:none;"><span class="modal-close">&times;</span><div class="modal-content"><img src="" alt="Gallery Image"></div></div>');
+    $('body').append(modal);
+
+    $('.gallery-grid').on('click', '.gallery-item', function() {
+        const imgSrc = $(this).find('img').attr('src');
+        modal.find('img').attr('src', imgSrc);
+        modal.fadeIn(300);
+    });
+
+    modal.on('click', '.modal-close', function() {
+        modal.fadeOut(300);
+    });
+
+    modal.on('click', function(e) {
+        if ($(e.target).is('.modal')) {
+            modal.fadeOut(300);
         }
     });
 }
@@ -123,7 +141,7 @@ function initFormHandling() {
         // Submit form
         submitForm();
     });
-    
+
     // Real-time validation
     $('#wedding-form input, #wedding-form select, #wedding-form textarea').on('blur', function() {
         validateField($(this));
@@ -132,18 +150,18 @@ function initFormHandling() {
     // Handle invitation field change to show/hide address field
     $('#invitation-input').on('change', function() {
         const invitationValue = $(this).val();
-        const addressRow = $('#address-row');
-        const addressInput = $('#address-input');
+            const addressRow = $('#address-row');
+            const addressInput = $('#address-input');
         
         if (invitationValue === 'yes') {
-            addressRow.slideDown(300);
-            addressInput.prop('required', true);
-        } else {
-            addressRow.slideUp(300);
+                addressRow.slideDown(300);
+                addressInput.prop('required', true);
+            } else {
+                addressRow.slideUp(300);
             addressInput.prop('required', false);
             addressInput.val(''); // Clear the address field when hidden
-        }
-    });
+            }
+        });
 }
 
 function validateForm() {
@@ -351,21 +369,24 @@ $('<style>').text(`
 
 // Intersection Observer for animations
 function initAnimations() {
+    if (!('IntersectionObserver' in window)) return;
+
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
     
-    const observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
+                $(entry.target).css('animation', 'fadeInUp 0.8s ease-out forwards');
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
     
-    // Observe elements that should animate
-    $('.detail-card, .story-content, .countdown-item').each(function() {
+    $('.story-item, .detail-card, .gallery-item, .spotlight-item').each(function() {
+        $(this).css('opacity', '0'); // Hide elements initially
         observer.observe(this);
     });
 }
@@ -407,9 +428,7 @@ $(window).resize(function() {
 // Preload images for better performance
 function preloadImages() {
     const imageUrls = [
-        // 'https://images.unsplash.com/photo-1519741497674-611481863552'
-        // 'static/YR5_4748.jpg',
-        'static/B6_cover.webp',
+        'static/01_cover.png',
         'static/02_card.jpg',
         'static/03.png',
         'static/04.png',
@@ -419,7 +438,14 @@ function preloadImages() {
         'static/08.png',
         'static/09.png',
         'static/10.png',
-        'static/11.png'
+        'static/11.png',
+        'static/gallery/YR8-6897.jpg',
+        'static/gallery/YR8-7069.jpg',
+        'static/gallery/YR8-7188.jpg',
+        'static/gallery/YR8-7194.jpg',
+        'static/gallery/YR8-7259.jpg',
+        'static/gallery/YR8-7306.jpg',
+        'static/gallery/YR8-7390.jpg'
     ];
     
     imageUrls.forEach(url => {

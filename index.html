@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Johnny & Josephine's Wedding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Arial:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
@@ -17,163 +19,126 @@
 
 <body>
     <!-- Hero Section -->
-    <section id="hero" class="hero-section">
-        <div class="hero-overlay">
-            <div class="container text-center text-white">
-                <div class="hero-content">
-                    <h1 class="hero-title">Let's Party</h1>
-                    <h1 class="hero-title">Johnny & Josephine</h1>
-                    <!-- <p class="hero-subtitle">Let's Party</p> -->
-                    <div class="wedding-date">
-                        <p class="date-text">October 25th, 2025</p>
-                        <div class="venue-name">晶宴會館｜桃園館</div>
-                        <div class="venue-floor">三樓詠劇場</div>
-                        <p class="location-text">17:30</p>
+    <section id="home" class="hero">
+        <div class="hero-image">
+            <img src="static/01_cover.png" alt="Wedding Photo" />
+        </div>
+        <div class="hero-content">
+            <div class="invitation-header">
+                <h1 class="couple-names">Johnny & Josephine</h1>
+                <p class="invitation-text">Wedding Invitation</p>
+            </div>
 
-                    </div>
-                    <button class="btn btn-outline-light btn-lg mt-4" onclick="scrollToSection('rsvp')">
-                        立即參與
-                    </button>
+            <div class="wedding-details">
+                <div class="date-time">2025.10.25 17:30</div>
+                <div class="venue-info">
+                    <div class="venue-name">晶宴會館｜桃園館</div>
+                    <div class="venue-floor">三樓詠劇場</div>
                 </div>
+            </div>
+
+            <button class="cta-button" onclick="scrollToSection('rsvp')">
+                立即回函
+            </button>
+
+            <div class="invitation-card-container">
+                <img src="static/02_card.jpg" alt="invitation_card" class="invitation-card" />
             </div>
         </div>
     </section>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top navbar-visible">
-        <div class="container">
-            <a class="navbar-brand" href="#hero">J & J</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+    <nav class="nav-bar">
+        <div class="nav-container container">
+            <a class="nav-brand" href="#home">J & J</a>
+            <button class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#hero">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#story">Our Story</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#details">Wedding Details</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#rsvp">RSVP</a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#story" class="nav-link">Our Story</a></li>
+                <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="#details" class="nav-link">Details</a></li>
+                <li><a href="#rsvp" class="nav-link">RSVP</a></li>
+            </ul>
         </div>
     </nav>
 
     <!-- Our Story Section -->
-    <section id="story" class="section-padding">
+    <section id="story" class="story-section">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center mb-5">
-                    <h2 class="section-title">Our Love Story</h2>
-                    <div class="section-divider"></div>
+            <h2 class="section-title">Our Love Story</h2>
+            <div class="story-item">
+                <div class="story-image">
+                    <img src="static/05.png" alt="Our Story Image 1">
+                </div>
+                <div class="story-content">
+                    <h3>How We Met</h3>
+                    <p>相遇不容易<br>在一起不簡單</p>
                 </div>
             </div>
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="story-image">
-                        <img src="static/05.png" alt="First Meeting" class="img-fluid rounded">
-                    </div>
+            <div class="story-item reverse">
+                <div class="story-image">
+                    <img src="static/06.png" alt="Our Story Image 2">
                 </div>
-                <!-- <div class="col-lg-6">
-                    <div class="story-content">
-                        <h3>How We Met</h3>
+                <div class="story-content">
+                    <h3>Opposites Attract</h3>
+                    <p>一個大膽嘗試<br>一個謹慎保守<br>一個沉穩理性<br>一個直爽感性</p>
+                </div>
+            </div>
+            <div class="story-item">
+                <div class="story-image">
+                    <img src="static/07.png" alt="Our Story Image 3">
+                </div>
+                <div class="story-content">
+                    <h3>Shared Passions</h3>
+                    <p>卻擁有許多相同興趣<br>游泳、潛水、野營<br>登山、籃球、壘球</p>
+                </div>
+            </div>
+            <div class="story-item reverse">
+                <div class="story-image">
+                    <img src="static/08.png" alt="Our Story Image 4">
+                </div>
+                <div class="story-content">
+                    <h3>Adventures Together</h3>
+                    <p>上山下海<br>風雨無阻</p>
+                </div>
+            </div>
+            <div class="story-item">
+                <div class="story-image">
+                    <img src="static/09.png" alt="Our Story Image 5">
+                </div>
+                <div class="story-content">
+                    <h3>Our Future</h3>
+                    <p>現在<br>我們要再一起<br>陪伴彼此生活<br>完成更多的事情</p>
+                </div>
+            </div>
+            <div class="story-item reverse">
+                <div class="story-image">
+                    <img src="static/10.png" alt="Our Story Image 6">
+                </div>
+                <div class="story-content">
+                    <h3>A New Chapter</h3>
+                    <p>一個人到不了的地方<br>那就攜手前進吧</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                        <p>Our story began on a beautiful spring day in 2020 when we both reached for the same book at the local coffee shop. What started as an awkward laugh turned into hours of conversation over coffee and pastries.</p>
-                        
-                        <h3>The Proposal</h3>
-                        <p>Three years later, John surprised Sarah with a romantic picnic in the same park where we had our first official date. As the sun set behind the mountains, he got down on one knee and asked the question that changed our lives forever.</p>
-                        
-                        <h3>Our Future</h3>
-                        <p>Now we're excited to celebrate our love with all of you - our family and friends who have supported us throughout this amazing journey.</p>
-                    </div>
-                </div> -->
-                <div class="col-lg-6">
-                    <div class="story-content">
-                        <p>相遇不容易<br>
-                        在一起不簡單</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="story-image">
-                        <img src="static/06.png" alt="Dating" class="img-fluid rounded">
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="story-content">
-                        <p>
-                            一個大膽嘗試<br>
-                            一個謹慎保守<br>
-                            一個沉穩理性<br>
-                            一個直爽感性
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="story-image">
-                        <img src="static/07.png" alt="Dating" class="img-fluid rounded">
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="story-content">
-                        <p>卻擁有許多相同興趣<br>
-                            游泳、潛水、野營<br>
-                            登山、籃球、壘球
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="story-image">
-                        <img src="static/08.png" alt="Dating" class="img-fluid rounded">
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="story-content">
-                        <p>上山下海<br>風雨無阻
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="story-image">
-                        <img src="static/09.png" alt="Dating" class="img-fluid rounded">
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="story-content">
-                        <p>現在<br>
-                            我們要再一起<br>
-                            陪伴彼此生活<br>
-                            完成更多的事情
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="story-image">
-                        <img src="static/10.png" alt="Dating" class="img-fluid rounded">
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="story-content">
-                        <p>一個人到不了的地方<br>
-                            那就攜手前進吧<br>
-                        </p>
-                    </div>
-                </div>
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <h2 class="section-title">Gallery</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="static/gallery/YR8-6897.jpg" alt="Gallery Image 1"></div>
+                <div class="gallery-item"><img src="static/gallery/YR8-7069.jpg" alt="Gallery Image 2"></div>
+                <div class="gallery-item"><img src="static/gallery/YR8-7188.jpg" alt="Gallery Image 3"></div>
+                <div class="gallery-item"><img src="static/gallery/YR8-7194.jpg" alt="Gallery Image 4"></div>
+                <div class="gallery-item"><img src="static/gallery/YR8-7259.jpg" alt="Gallery Image 5"></div>
+                <div class="gallery-item"><img src="static/gallery/YR8-7306.jpg" alt="Gallery Image 6"></div>
+                <div class="gallery-item"><img src="static/gallery/YR8-7390.jpg" alt="Gallery Image 7"></div>
             </div>
         </div>
     </section>
@@ -183,7 +148,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center mb-5">
-                    <h2 class="section-title">Wedding Details</h2>
+            <h2 class="section-title">Wedding Details</h2>
                     <div class="section-divider"></div>
                 </div>
             </div>
@@ -191,29 +156,29 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="detail-card text-center">
                         <div class="detail-icon">
-                            <i class="fas fa-calendar-alt"></i>
+                    <i class="fas fa-calendar-alt"></i>
                         </div>
                         <h4>When</h4>
-                        <p><strong>Saturday, October 25th, 2025</strong></p>
-                        <p>5:30 PM</p>
-                    </div>
+                    <p><strong>Saturday, October 25th, 2025</strong></p>
+                    <p>5:30 PM</p>
+                </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="detail-card text-center">
                         <div class="detail-icon">
-                            <i class="fas fa-map-marker-alt"></i>
+                    <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <h4>Where</h4>
-                        <p><strong>晶宴會館-桃園館</strong></p>
+                    <p><strong>晶宴會館-桃園館</strong></p>
                         <p>桃園市桃園區<br>南平路166號</p>
-                        <a href="https://maps.app.goo.gl/pJSXo1DvpyQhg3LEA" target="_blank"
+                    <a href="https://maps.app.goo.gl/pJSXo1DvpyQhg3LEA" target="_blank"
                             class="btn btn-sm btn-outline-primary mt-2">View Map</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="detail-card text-center">
                         <div class="detail-icon">
-                            <i class="fa-solid fa-square-parking"></i>
+                    <i class="fa-solid fa-square-parking"></i>
                         </div>
                         <h4>停車資訊</h4>
                         <p><strong>賓客停車</strong></p>
@@ -261,7 +226,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center mb-5">
-                    <h2 class="section-title">RSVP</h2>
+            <h2 class="section-title">RSVP</h2>
                     <div class="section-divider"></div>
                     <p class="lead">致我們生命中重要的您們</p>
                     <p class="lead">誠摯邀請您參加我們的婚禮</p>
@@ -273,7 +238,7 @@
                         <form id="wedding-form">
                             <div class="row">
                                 <div class="col-md-6 pb-3">
-                                    <div class="form-group">
+                <div class="form-group">
                                         <label for="name-input">貴姓大名*</label>
                                         <input class="form-control" id="name-input" type="text" name="name"
                                             required="required" placeholder="Enter your full name(s)" />
@@ -284,96 +249,96 @@
                                     <div class="form-group">
                                         <label for="relation-input">請問您是男方，還是女方親友</label>
                                         <select class="form-control" id="relation-input" name="relation">
-                                            <option value="">Please select</option>
+                        <option value="">Please select</option>
                                             <option value="friends-groom">男方親友</option>
                                             <option value="friends-bride">女方親友</option>
                                             <option value="other">其他</option>
-                                        </select>
-                                    </div>
+                    </select>
+                </div>
                                 </div>
                             </div>
 
 
                             <div class="row">
                                 <div class="col-md-6 pb-3">
-                                    <div class="form-group">
+                <div class="form-group">
                                         <label for="attendance-input">您能參加我們的婚禮嗎？*</label>
                                         <select class="form-control" id="attendance-input" name="attendance"
                                             required="required">
-                                            <option value="">Please select</option>
+                        <option value="">Please select</option>
                                             <option value="yes">欣然接受</option>
                                             <option value="no">忍痛拒絕</option>
-                                        </select>
-                                    </div>
+                    </select>
+                </div>
                                 </div>
                                 <div class="col-md-6 pb-3">
-                                    <div class="form-group">
+                <div class="form-group">
                                         <label for="guests-input">當天出席人數*</label>
                                         <select class="form-control" id="guests-input" name="guests"
                                             required="required">
-                                            <option value="">Please select</option>
+                        <option value="">Please select</option>
                                             <option value="1">單獨赴約(+1)</option>
                                             <option value="2">攜伴參加(+2)</option>
                                             <option value="3">攜家帶眷(+3)</option>
                                             <option value="4">扶老攜幼(+4)</option>
                                             <option value="5">5+ people</option>
-                                        </select>
-                                    </div>
+                    </select>
+                </div>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-12 pb-3">
-                                    <div class="form-group">
+                <div class="form-group">
                                         <label for="dietary-input">您在我們的婚禮上想要選擇什麼主菜？</label>
                                         <select class="form-control" id="dietary-input" name="dietary">
                                             <option value="">Please select</option>
                                             <option value="">葷食</option>
                                             <option value="1">素食</option>
                                             <option value="2">減肥中，我絕食</option>
-                                        </select>
-                                    </div>
+                    </select>
+                </div>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-12 pb-3">
-                                    <div class="form-group">
+                <div class="form-group">
                                         <label for="children-seats-input">是否需要兒童座椅</label>
                                         <select class="form-control" id="children-seats-input" name="children-seats">
                                             <option value="">Please select</option>
                                             <option value="yes">需要</option>
                                             <option value="no">不需要</option>
-                                        </select>
-                                    </div>
+                    </select>
+                </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 pb-3">
-                                    <div class="form-group">
+                <div class="form-group">
                                         <label for="invitation-input">是否需要紙本喜帖</label>
                                         <select class="form-control" id="invitation-input" name="invitation">
                                             <option value="">Please select</option>
                                             <option value="yes">需要</option>
                                             <option value="no">不需要</option>
-                                        </select>
-                                    </div>
+                    </select>
+                </div>
                                 </div>
-                            </div>
+                </div>
 
                             <div class="row" id="address-row" style="display: none;">
                                 <div class="col-md-12 pb-3">
-                                    <div class="form-group">
+                <div class="form-group">
                                         <label for="address-input">寄送地址*</label>
                                         <textarea class="form-control" id="address-input" name="address" rows="3"
                                             placeholder="請輸入完整寄送地址（包含郵遞區號、縣市、區域、街道、門牌號碼）"></textarea>
                                     </div>
                                 </div>
-                            </div>
+                </div>
 
                             <div class="row">
                                 <div class="col-md-12 pb-3">
-                                    <div class="form-group">
+                <div class="form-group">
                                         <label for="message-input">給新人的話</label>
                                         <textarea class="form-control" id="message-input" name="message" rows="3"
                                             placeholder="Any special message for the happy couple?"></textarea>
@@ -412,8 +377,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+                </div>
+                    </div>
     </section>
 
     <!-- Footer -->
