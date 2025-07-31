@@ -577,10 +577,36 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Export functions for testing (if needed)
+// Parking Modal Functions
+function openParkingModal() {
+    const modal = document.getElementById('parkingModal');
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+}
+
+function closeParkingModal() {
+    const modal = document.getElementById('parkingModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Restore scrolling
+    }
+}
+
+// Close modal when pressing Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeParkingModal();
+    }
+});
+
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         validateForm,
         isValidEmail,
-        scrollToSection
+        scrollToSection,
+        openParkingModal,
+        closeParkingModal
     };
 }

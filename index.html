@@ -182,10 +182,9 @@
                             <i class="fa-solid fa-square-parking"></i>
                         </div>
                         <h3>停車資訊</h3>
-                        <p><strong>賓客停車</strong></p>
-                        <p>本館備有停車位置：<br>
-                            P1: 晶宴會館附設停車場<br>
-                            P2: 晶宴特約停車場(特約三小時免費)</p>
+                        <p><strong>特約停車場</strong></p>
+                        <p>免費停車(三小時)</p>
+                        <img src="static/parking_info.jpg" alt="Parking Location Map" class="img-fluid mt-3 parking-image" style="max-width: 100%; border-radius: 8px; cursor: pointer;" onclick="openParkingModal()" title="點擊查看大圖">
                     </div>
                 </div>
             </div>
@@ -425,6 +424,18 @@
             </div>
         </div>
     </footer>
+
+    <!-- Parking Image Modal -->
+    <div id="parkingModal" class="parking-modal" onclick="closeParkingModal()">
+        <div class="parking-modal-content" onclick="event.stopPropagation()">
+            <span class="parking-modal-close" onclick="closeParkingModal()">&times;</span>
+            <img src="static/parking_info.jpg" alt="Parking Location Map - Large View" class="parking-modal-image">
+            <div class="parking-modal-caption">
+                <h4>停車資訊詳細地圖</h4>
+                <p>P: 晶宴會館附設停車場 | P1: 晶宴特約停車場(特約三小時免費)</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
