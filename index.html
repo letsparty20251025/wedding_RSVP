@@ -185,7 +185,7 @@
                         <p><strong>賓客停車</strong></p>
                         <p>本館備有停車位置：<br>
                             P1: 晶宴會館附設停車場<br>
-                            P2: 晶宴特約停車場，免費三小時停車</p>
+                            P2: 晶宴特約停車場(特約三小時免費)</p>
                     </div>
                 </div>
             </div>
@@ -291,7 +291,7 @@
                             <div class="row">
                                 <div class="col-md-12 pb-3">
                                     <div class="form-group">
-                                        <label for="dietary-input">您在我們的婚禮上想要選擇什麼餐點類型？</label>
+                                        <label for="dietary-input">想要選擇什麼餐點類型？</label>
                                         <select class="form-control" id="dietary-input" name="dietary">
                                             <option value="">Please select</option>
                                             <option value="">葷食</option>
@@ -331,6 +331,22 @@
                                 </div>
                             </div>
 
+                            <div class="row" id="children-seats-count-row" style="display: none;">
+                                <div class="col-md-12 pb-3">
+                                    <div class="form-group">
+                                        <label for="children-seats-count-input">需要幾張兒童座椅？</label>
+                                        <select class="form-control" id="children-seats-count-input" name="children-seats-count">
+                                            <option value="">Please select</option>
+                                            <option value="1">1 張</option>
+                                            <option value="2">2 張</option>
+                                            <option value="3">3 張</option>
+                                            <!-- <option value="4">4 張</option>
+                                            <option value="5">5 張</option> -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-12 pb-3">
                                     <div class="form-group">
@@ -365,7 +381,7 @@
                             <div class="row">
                                 <div class="col-md-12 pb-3">
                                     <div class="form-group">
-                                        <label for="email-input">填寫電子郵件，收取登記通知</label>
+                                        <label for="email-input">填寫電子郵件，收取確認通知</label>
                                         <input class="form-control" id="email-input" type="email" name="email"
                                             placeholder="Enter your email address" />
                                     </div>

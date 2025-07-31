@@ -199,6 +199,22 @@ function initFormHandling() {
             vegetarianMealsInput.val(''); // Clear the field when hidden
         }
     });
+
+    // Handle children seats field change to show/hide children seats count question
+    $('#children-seats-input').on('change', function() {
+        const childrenSeatsValue = $(this).val();
+        const childrenSeatsCountRow = $('#children-seats-count-row');
+        const childrenSeatsCountInput = $('#children-seats-count-input');
+        
+        if (childrenSeatsValue === 'yes') {
+            childrenSeatsCountRow.slideDown(300);
+            childrenSeatsCountInput.prop('required', true);
+        } else {
+            childrenSeatsCountRow.slideUp(300);
+            childrenSeatsCountInput.prop('required', false);
+            childrenSeatsCountInput.val(''); // Clear the field when hidden
+        }
+    });
 }
 
 function validateForm() {
@@ -215,6 +231,12 @@ function validateForm() {
     const dietaryValue = $('#dietary-input').val();
     if (dietaryValue === '1') {
         requiredFields.push('vegetarian-meals');
+    }
+    
+    // Add children seats count to required fields if children seats are needed
+    const childrenSeatsValue = $('#children-seats-input').val();
+    if (childrenSeatsValue === 'yes') {
+        requiredFields.push('children-seats-count');
     }
     
     requiredFields.forEach(fieldName => {
@@ -367,6 +389,10 @@ function resetForm() {
     // Hide vegetarian meals field when form is reset
     $('#vegetarian-meals-row').hide();
     $('#vegetarian-meals-input').prop('required', false);
+    
+    // Hide children seats count field when form is reset
+    $('#children-seats-count-row').hide();
+    $('#children-seats-count-input').prop('required', false);
 }
 
 // Optional: Confetti effect for successful submission

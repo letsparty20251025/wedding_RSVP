@@ -112,6 +112,7 @@ function createHeaders(sheet) {
     'dietary',
     'vegetarian-meals',
     'children-seats',
+    'children-seats-count',
     'invitation',
     'address',
     'message',
@@ -174,6 +175,7 @@ function initializeSheet() {
         'dietary',
         'vegetarian-meals',
         'children-seats',
+        'children-seats-count',
         'invitation',
         'address',
         'message',
@@ -209,10 +211,11 @@ function initializeSheet() {
     sheet.setColumnWidth(6, 150); // Dietary
     sheet.setColumnWidth(7, 150); // Vegetarian-meals
     sheet.setColumnWidth(8, 150); // Children-seats
-    sheet.setColumnWidth(9, 150); // Invitation
-    sheet.setColumnWidth(10, 300); // Address
-    sheet.setColumnWidth(11, 300); // Message
-    sheet.setColumnWidth(12, 200); // Email
+    sheet.setColumnWidth(9, 150); // Children-seats-count
+    sheet.setColumnWidth(10, 150); // Invitation
+    sheet.setColumnWidth(11, 300); // Address
+    sheet.setColumnWidth(12, 300); // Message
+    sheet.setColumnWidth(13, 200); // Email
     
     // Add data validation for attendance column (column D)
     if (sheet.getLastColumn() >= 4) {
@@ -280,9 +283,20 @@ function initializeSheet() {
       childrenSeatsColumn.setDataValidation(childrenSeatsRule);
     }
     
-    // Add data validation for invitation column (column I)
+    // Add data validation for children-seats-count column (column I)
     if (sheet.getLastColumn() >= 9) {
-      var invitationColumn = sheet.getRange('I:I');
+      var childrenSeatsCountColumn = sheet.getRange('I:I');
+      var childrenSeatsCountRule = SpreadsheetApp.newDataValidation()
+        .requireValueInList(['', '1', '2', '3', '4', '5'], true)
+        .setAllowInvalid(true)
+        .setHelpText('Select number of children seats needed')
+        .build();
+      childrenSeatsCountColumn.setDataValidation(childrenSeatsCountRule);
+    }
+    
+    // Add data validation for invitation column (column J)
+    if (sheet.getLastColumn() >= 10) {
+      var invitationColumn = sheet.getRange('J:J');
       var invitationRule = SpreadsheetApp.newDataValidation()
         .requireValueInList(['yes', 'no'], true)
         .setAllowInvalid(true)
@@ -379,6 +393,14 @@ function createEmailBody(data, isGuestEmail) {
     vegetarianMealsText = data['vegetarian-meals'] + ' 份素食';
   } else {
     vegetarianMealsText = 'Not applicable';
+  }
+  
+  // Map children seats count to readable text
+  var childrenSeatsCountText = '';
+  if (data['children-seats-count'] && data['children-seats'] === 'yes') {
+    childrenSeatsCountText = data['children-seats-count'] + ' 張兒童座椅';
+  } else {
+    childrenSeatsCountText = 'Not applicable';
   }
   
   // Map relation to readable text
@@ -493,6 +515,17 @@ function createEmailBody(data, isGuestEmail) {
                 ${childrenSeatsText}
               </td>
             </tr>
+            
+            ${data['children-seats'] === 'yes' && data['children-seats-count'] ? `
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
+                &#x1FA92; 兒童座椅數量
+              </td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #666;">
+                ${childrenSeatsCountText}
+              </td>
+            </tr>
+            ` : ''}
             
             <tr>
               <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">
@@ -645,7 +678,8 @@ function testSetup() {
       guests: '2',
       dietary: '1',
       'vegetarian-meals': '2',
-      'children-seats': 'no',
+      'children-seats': 'yes',
+      'children-seats-count': '3',
       invitation: 'yes',
       address: 'Test Address',
       message: 'This is a test submission'
