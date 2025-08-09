@@ -606,9 +606,13 @@ function openParkingModal() {
     if (modal) {
         // lazy set large image source on first open
         const modalImg = document.getElementById('parkingModalImage');
-        if (modalImg && !modalImg.src) {
-            const dataSrc = modalImg.getAttribute('data-src');
-            if (dataSrc) modalImg.src = dataSrc;
+        if (modalImg) {
+            // Using getAttribute avoids the browser resolving an empty src to the page URL
+            const currentSrcAttr = modalImg.getAttribute('src');
+            if (!currentSrcAttr || currentSrcAttr === '' || currentSrcAttr === window.location.href) {
+                const dataSrc = modalImg.getAttribute('data-src');
+                if (dataSrc) modalImg.setAttribute('src', dataSrc);
+            }
         }
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
