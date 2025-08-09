@@ -460,6 +460,12 @@ section {
     font-size: 1.8rem;
     margin-bottom: 1rem;
     color: #d4b99c;
+    line-height: 1.8;
+}
+
+.story-content h4 {
+    /* Increase line spacing by ~1.5x from the default 1.2 -> 1.8 */
+    line-height: 1.8;
 }
 
 .story-content p {
