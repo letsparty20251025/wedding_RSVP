@@ -503,7 +503,6 @@ function preloadImages() {
     const imageUrls = [
         'static/01_cover.webp',
         'static/02_card.jpg',
-        'static/03.png',
         'static/04.png',
         'static/05.png',
         'static/06.png',
@@ -511,14 +510,18 @@ function preloadImages() {
         'static/08.png',
         'static/09.png',
         'static/10.png',
-        'static/11.png',
         'static/gallery/YR8-6897.jpg',
         'static/gallery/YR8-7069.jpg',
         'static/gallery/YR8-7188.jpg',
         'static/gallery/YR8-7194.jpg',
         'static/gallery/YR8-7259.jpg',
         'static/gallery/YR8-7306.jpg',
-        'static/gallery/YR8-7390.jpg'
+        'static/gallery/YR8-7390.jpg',
+        'static/gallery/YR5_4953.jpg',
+        'static/gallery/YR5_4985.jpg',
+        'static/gallery/YR8-7075.jpg',
+        'static/gallery/YR8_7318.jpg',
+        'static/gallery/YR5_4792.jpg',
     ];
     
     imageUrls.forEach(url => {
