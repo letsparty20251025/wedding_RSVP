@@ -519,8 +519,29 @@ section {
     transition: transform 0.3s ease;
 }
 
+/* Specific positioning for the YR8-7075.jpg image */
+.gallery-item img[src="static/gallery/YR8-7075.jpg"] {
+    object-position: center top;
+}
+
+/* Specific positioning for the YR8-7390.jpg image - center top */
+.gallery-item img[src="static/gallery/YR8-7390.jpg"] {
+    object-position: center top;
+}
+
+/* Specific positioning for the YR5_4792.jpg image - zoom in and center down */
+.gallery-item img[src="static/gallery/YR5_4792.jpg"] {
+    object-position: center bottom;
+    transform: scale(1.1);
+}
+
 .gallery-item:hover img {
     transform: scale(1.1);
+}
+
+/* Maintain zoom for YR5_4792.jpg on hover */
+.gallery-item:hover img[src="static/gallery/YR5_4792.jpg"] {
+    transform: scale(1.2);
 }
 
 /* Modal */
@@ -998,8 +1019,29 @@ section {
     }
 
     .gallery-item img {
-        /* height: 280px; */
-        height: 380px;
+        height: 280px;
+        /* height: 380px; */
+    }
+
+    /* Specific positioning for the YR8-7075.jpg image on mobile */
+    .gallery-item img[src="static/gallery/YR8-7075.jpg"] {
+        object-position: center top;
+    }
+
+    /* Specific positioning for the YR8-7390.jpg image on mobile - center top */
+    .gallery-item img[src="static/gallery/YR8-7390.jpg"] {
+        object-position: center top;
+    }
+
+    /* Specific positioning for the YR5_4792.jpg image on mobile - zoom in and center down */
+    .gallery-item img[src="static/gallery/YR5_4792.jpg"] {
+        object-position: center bottom;
+        transform: scale(1.1);
+    }
+
+    /* Maintain zoom for YR5_4792.jpg on hover for mobile */
+    .gallery-item:hover img[src="static/gallery/YR5_4792.jpg"] {
+        transform: scale(1.2);
     }
 
     .rsvp-form {
