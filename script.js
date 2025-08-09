@@ -318,26 +318,26 @@ function hideLoadingState() {
 }
 
 function hideMessages() {
-    $('#success-message, #error-message').addClass('d-none');
+    $('#success-msg, #error-msg').addClass('d-none');
 }
 
 function showSuccessMessage() {
-    $('#success-message').removeClass('d-none');
-    $('#error-message').addClass('d-none');
+    $('#success-msg').removeClass('d-none');
+    $('#error-msg').addClass('d-none');
     
     // Scroll to success message
     $('html, body').animate({
-        scrollTop: $('#success-message').offset().top - 100
+        scrollTop: $('#success-msg').offset().top - 100
     }, 500);
 }
 
 function showErrorMessage() {
-    $('#error-message').removeClass('d-none');
-    $('#success-message').addClass('d-none');
+    $('#error-msg').removeClass('d-none');
+    $('#success-msg').addClass('d-none');
     
     // Scroll to error message
     $('html, body').animate({
-        scrollTop: $('#error-message').offset().top - 100
+        scrollTop: $('#error-msg').offset().top - 100
     }, 500);
 }
 
