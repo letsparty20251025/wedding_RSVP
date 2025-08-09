@@ -126,20 +126,74 @@ function initGalleryModal() {
     const modal = $('<div class="modal" style="display:none;"><span class="modal-close">&times;</span><div class="modal-content"><img src="" alt="Gallery Image"></div></div>');
     $('body').append(modal);
 
+    const $img = modal.find('img');
+
+    const openModal = (src) => {
+        $img.attr('src', src);
+        modal.fadeIn(300);
+    };
+
+    const closeModal = () => {
+        modal.fadeOut(300);
+    };
+
+    // Open from gallery item
     $('.gallery-grid').on('click', '.gallery-item', function() {
         const imgSrc = $(this).find('img').attr('src');
-        modal.find('img').attr('src', imgSrc);
-        modal.fadeIn(300);
+        openModal(imgSrc);
     });
 
+    // Close with X button
     modal.on('click', '.modal-close', function() {
-        modal.fadeOut(300);
+        closeModal();
     });
 
+    // Close when clicking the dark backdrop
     modal.on('click', function(e) {
         if ($(e.target).is('.modal')) {
-            modal.fadeOut(300);
+            closeModal();
         }
+    });
+
+    // Close when pressing Escape (desktop and mobile keyboards)
+    $(document).on('keydown.galleryModal', function(e) {
+        if (e.key === 'Escape' && modal.is(':visible')) {
+            e.preventDefault();
+            closeModal();
+        }
+    });
+
+    // Mobile-friendly exits
+    // 1) Tap on the image to close (useful when image covers most of the screen)
+    modal.on('click', '.modal-content img', function() {
+        closeModal();
+    });
+
+    // 2) Swipe down to close
+    let touchStartY = null;
+    let touchMoved = false;
+    modal.on('touchstart', function(e) {
+        if (e.touches && e.touches.length === 1) {
+            touchStartY = e.touches[0].clientY;
+            touchMoved = false;
+        }
+    });
+    modal.on('touchmove', function(e) {
+        if (touchStartY == null || !(e.touches && e.touches.length)) return;
+        const dy = e.touches[0].clientY - touchStartY;
+        if (Math.abs(dy) > 10) touchMoved = true;
+    });
+    modal.on('touchend', function(e) {
+        if (touchStartY == null) return;
+        const endY = (e.changedTouches && e.changedTouches[0].clientY) || touchStartY;
+        const dy = endY - touchStartY;
+        // If user swipes down a reasonable distance, close the modal
+        if (dy > 60) {
+            closeModal();
+        }
+        // Reset trackers
+        touchStartY = null;
+        touchMoved = false;
     });
 }
 
