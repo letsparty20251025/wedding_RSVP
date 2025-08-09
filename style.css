@@ -281,6 +281,12 @@ body {
     box-shadow: none;
 }
 
+/* Performance: avoid work for offscreen sections until visible */
+#story, #gallery, #details, #countdown, #rsvp, .footer-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1000px 800px; /* reserve space to reduce layout shifts */
+}
+
 /* Section Styles */
 section {
     padding: 80px 0;

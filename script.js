@@ -46,7 +46,6 @@ $(document).ready(function() {
     initMobileNavToggle();
     initGalleryModal();
     initAnimations();
-    preloadImages();
 
     // Add loading animation to page
     $('body').addClass('loaded');
@@ -552,40 +551,7 @@ $(window).resize(function() {
     }
 });
 
-// Preload images for better performance
-function preloadImages() {
-    const imageUrls = [
-        'static/01_cover.webp',
-        'static/02_card.jpg',
-        'static/04.png',
-        'static/05.png',
-        'static/06.png',
-        'static/07.png',
-        'static/08.png',
-        'static/09.png',
-        'static/10.png',
-        'static/gallery/YR8-6897.jpg',
-        'static/gallery/YR8-7069.jpg',
-        'static/gallery/YR8-7188.jpg',
-        'static/gallery/YR8-7194.jpg',
-        'static/gallery/YR8-7259.jpg',
-        'static/gallery/YR8-7306.jpg',
-        'static/gallery/YR8-7390.jpg',
-        'static/gallery/YR5_4953.jpg',
-        'static/gallery/YR5_4985.jpg',
-        'static/gallery/YR8-7075.jpg',
-        'static/gallery/YR8_7318.jpg',
-        'static/gallery/YR5_4792.jpg',
-    ];
-    
-    imageUrls.forEach(url => {
-        const img = new Image();
-        img.src = url;
-    });
-}
-
-// Initialize preloading
-preloadImages();
+// Removed heavy image preloading to improve initial load time. Images will lazy-load via HTML attributes.
 
 // Service worker registration for PWA capabilities (optional)
 if ('serviceWorker' in navigator) {
@@ -638,6 +604,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function openParkingModal() {
     const modal = document.getElementById('parkingModal');
     if (modal) {
+        // lazy set large image source on first open
+        const modalImg = document.getElementById('parkingModalImage');
+        if (modalImg && !modalImg.src) {
+            const dataSrc = modalImg.getAttribute('data-src');
+            if (dataSrc) modalImg.src = dataSrc;
+        }
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
