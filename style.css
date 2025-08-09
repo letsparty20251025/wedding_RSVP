@@ -262,7 +262,8 @@ body {
 
 .hero-image {
     width: 100vw;
-    height: 60vh;
+    /* height: 60vh; */
+    height: 100vh;
     margin-left: calc(50% - 50vw);
     margin-bottom: 40px;
     position: relative;
